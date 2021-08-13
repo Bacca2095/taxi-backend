@@ -35,14 +35,14 @@ pipeline{
                     sh 'npm run test:cov'					
 				}
             }
-			 stage('Sonar Analysis'){
-			 	steps{
-			 		echo '------------>Analisis de código estático<------------'
-			 		  withSonarQubeEnv('Sonar') {
-                         sh "${tool name: 'SonarScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner -Dsonar.projectKey=co.com.ceiba.adn:cesar.taxi-backend.bacca -Dsonar.projectName=AdnTaxiBackend(cesar.bacca) -Dproject.settings=./sonar-project.properties"
-                      }
-			 	}
-			 }
+			stage('Static Code Analysis') {
+				steps{
+					echo '------------>Análisis de código estático<------------'
+					withSonarQubeEnv('Sonar') {
+						sh "${tool name: 'SonarScanner', type:'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner -Dproject.settings=sonar-project.properties"
+					}
+				}
+    		}
 		
 		
 
