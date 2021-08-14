@@ -41,7 +41,7 @@ pipeline{
 			 	steps{
 			 		echo '------------>Analisis de código estático<------------'
 			 		  withSonarQubeEnv('Sonar') {
-                         sh "${tool name: 'SonarScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner -Dsonar.projectKey=co.com.ceiba.adn:adn-taxi-backend.cesar.bacca -Dsonar.projectName=CeibaADN-AdnTaxiBackend(cesar.bacca) -Dproject.settings=./sonar-project.properties"
+                         sh "${tool name: 'SonarScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner -Dproject.settings=./sonar-project.properties"
                       }
 			 	}
 			 }
@@ -51,7 +51,7 @@ pipeline{
 		}
 		post {
 			failure {
-				mail(to: 'juan.botero@ceiba.com.co',
+				mail(to: 'cesar.bacca@ceiba.com.co',
 				body:"Build failed in Jenkins: Project: ${env.JOB_NAME} Build /n Number: ${env.BUILD_NUMBER} URL de build: ${env.BUILD_NUMBER}/n/nPlease go to ${env.BUILD_URL} and verify the build",
 				subject: "ERROR CI: ${env.JOB_NAME}")
 			}
