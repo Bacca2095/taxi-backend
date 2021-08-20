@@ -3,6 +3,9 @@ const COSTO_BASE_DIURNO = 6000;
 const COSTO_BASE_NOCTURNO = 7500;
 const PORCENTAJE_ADICIONAL_FIN_DE_SEMANA = 0.3;
 const PORCENTAJE_DESCUENTO_CUARTA_CARRERA = 0.2;
+const HORA_MEDIO_DIA = 12;
+const HORA_FIN_DIA = 23;
+const HORA_A_MINUTOS = 60;
 
 export class Carrera {
   readonly #nombre: string;
@@ -25,7 +28,8 @@ export class Carrera {
     let fechaHoraRecogida = new Date(fechaRecogida);
 
     fechaHoraRecogida.setHours(
-      +horaRecogida.split(':')[0] - 5,
+      +horaRecogida.split(':')[0] -
+        fechaHoraRecogida.getTimezoneOffset() / HORA_A_MINUTOS,
       +horaRecogida.split(':')[1],
       0,
     );
@@ -42,9 +46,12 @@ export class Carrera {
   }
 
   private validarJornadaDiurnaNocturna(hora: string) {
-    if (+hora.split(':')[0] < 12 || +hora.split(':')[0] == 24) {
+    if (+hora.split(':')[0] < HORA_MEDIO_DIA) {
       return COSTO_BASE_DIURNO;
-    } else if (+hora.split(':')[0] <= 23 && +hora.split(':')[0] >= 12) {
+    } else if (
+      +hora.split(':')[0] <= HORA_FIN_DIA &&
+      +hora.split(':')[0] >= HORA_MEDIO_DIA
+    ) {
       return COSTO_BASE_NOCTURNO;
     } else {
       throw new ErrorHoraInvalida('La hora debe estar en formato de 24 horas');

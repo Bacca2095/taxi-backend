@@ -173,11 +173,10 @@ describe('Pruebas al controlador de carreras', () => {
       .delete('/carreras/1')
       .expect(HttpStatus.OK);
   });
-
   it('debería fallar al eliminar una carrera con menos de media hora de diferencia a la hora actual', async () => {
     const fechaActual = new Date();
     const fechaRecogida = new Date();
-    fechaRecogida.setHours(fechaRecogida.getHours() - 5);
+    fechaRecogida.setHours(fechaRecogida.getTimezoneOffset() / 60);
     fechaRecogida.setMinutes(fechaRecogida.getMinutes() + 29);
 
     const carrera: any = {

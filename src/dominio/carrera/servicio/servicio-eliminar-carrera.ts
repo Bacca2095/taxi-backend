@@ -6,17 +6,22 @@ export class ServicioEliminarCarrera {
 
   async ejecutar(id: number) {
     const carrera = await this._repositorioCarrera.buscar(id);
+    const hourToMinutes = 60;
+    const secondToMilli = 1000;
+    const minutesMinToDelete = 29;
 
     const fechaActual = new Date();
-    fechaActual.setHours(fechaActual.getHours() - 5);
+    fechaActual.setHours(
+      fechaActual.getHours() - fechaActual.getTimezoneOffset() / hourToMinutes,
+    );
 
     let diferenciaTiempo =
-      (carrera.fechaRecogida.getTime() - fechaActual.getTime()) / 1000;
-    diferenciaTiempo /= 60;
+      (carrera.fechaRecogida.getTime() - fechaActual.getTime()) / secondToMilli;
+    diferenciaTiempo /= hourToMinutes;
 
     diferenciaTiempo = Math.round(diferenciaTiempo);
 
-    if (diferenciaTiempo > 29) {
+    if (diferenciaTiempo > minutesMinToDelete) {
       await this._repositorioCarrera.eliminar(id);
     } else {
       throw new ErrorEliminarCarrera(

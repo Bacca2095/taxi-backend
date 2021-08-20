@@ -13,13 +13,14 @@ export class RepositorioCarreraMysql implements RepositorioCarrera {
   ) {}
 
   async validarDescuentoCuartaCarrera(documento: string): Promise<boolean> {
+    const minServicesToDiscount = 3;
     return (
       (await this.repositorio.count({
         where: {
           documento,
           fechaRecogida: Like(`${new Date().toISOString().split('T')[0]}%`),
         },
-      })) === 3
+      })) === minServicesToDiscount
     );
   }
 
