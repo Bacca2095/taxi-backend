@@ -3,9 +3,9 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { FiltroExcepcionesDeNegocio } from './infraestructura/excepciones/filtro-excepciones-negocio';
-import { AppLogger } from './infraestructura/configuracion/ceiba-logger.service';
+import { AppLogger } from './infraestructura/configuracion/logger.service';
 import { ConfigService } from '@nestjs/config';
-import { EnvVariables } from './infraestructura/configuracion/environment/env-variables.enum';
+import { EnvVariables } from './infraestructura/configuracion/enviroment/env-variables.enum';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,17 +14,16 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new FiltroExcepcionesDeNegocio(logger));
-
+  app.enableCors();
+  app.setGlobalPrefix(configService.get(EnvVariables.APPLICATION_CONTEXT_PATH));
   const swaggerOptions = new DocumentBuilder()
-    .setTitle('Bloque Arquitectura Hexagonal Node')
-    .setDescription('Bloque que hace uso de Nest.js para la creación de API\'s con Node.js')
+    .setTitle('Crud api de carreras')
     .setVersion('1.0')
     .build();
 
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerOptions);
   SwaggerModule.setup('/api/doc', app, swaggerDocument);
 
-  app.setGlobalPrefix(configService.get(EnvVariables.APPLICATION_CONTEXT_PATH));
   await app.listen(configService.get(EnvVariables.APPLICATION_PORT));
 }
 bootstrap();

@@ -1,5 +1,5 @@
 import { ConfigService } from '@nestjs/config';
-import { EnvVariables } from './environment/env-variables.enum';
+import { EnvVariables } from './enviroment/env-variables.enum';
 
 export const databaseConfigFactory = (configService: ConfigService) => ({
   type: configService.get(EnvVariables.DATABASE_TYPE),
@@ -9,7 +9,9 @@ export const databaseConfigFactory = (configService: ConfigService) => ({
   password: configService.get(EnvVariables.DATABASE_PASSWORD),
   database: configService.get(EnvVariables.DATABASE_NAME),
   entities: [configService.get(EnvVariables.TYPEORM_ENTITIES_DIR)],
-  migrationsTableName: configService.get(EnvVariables.TYPEORM_MIGRATIONS_TABLENAME),
+  migrationsTableName: configService.get(
+    EnvVariables.TYPEORM_MIGRATIONS_TABLENAME,
+  ),
   migrations: [configService.get(EnvVariables.TYPEORM_MIGRATIONS_DIR)],
   cli: {
     migrationsDir: configService.get(EnvVariables.TYPEORMCLI_MIGRATIONS_DIR),

@@ -1,12 +1,16 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpStatus } from '@nestjs/common';
+import {
+  ArgumentsHost,
+  Catch,
+  ExceptionFilter,
+  HttpStatus,
+} from '@nestjs/common';
 import { Request, Response } from 'express';
-import { ErrorDeNegocio } from 'src/dominio/errores/error-de-negocio';
+import { ErrorDeNegocio } from './../../dominio/errores/error-de-negocio';
 import { Message } from './message';
-import { AppLogger } from '../configuracion/ceiba-logger.service';
+import { AppLogger } from '../configuracion/logger.service';
 
 @Catch(ErrorDeNegocio)
 export class FiltroExcepcionesDeNegocio implements ExceptionFilter {
-
   constructor(private readonly logger: AppLogger) {
     this.logger.setContext(FiltroExcepcionesDeNegocio.name);
   }
