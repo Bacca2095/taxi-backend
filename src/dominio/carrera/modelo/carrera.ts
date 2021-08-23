@@ -3,9 +3,10 @@ const COSTO_BASE_DIURNO = 6000;
 const COSTO_BASE_NOCTURNO = 7500;
 const PORCENTAJE_ADICIONAL_FIN_DE_SEMANA = 0.3;
 const PORCENTAJE_DESCUENTO_CUARTA_CARRERA = 0.2;
-const HORA_MEDIO_DIA = 12;
+const HORA_INICIO_DIA = 0;
 const HORA_FIN_DIA = 23;
 const HORA_A_MINUTOS = 60;
+const RANGO_DIURNO = [6, 21];
 
 export class Carrera {
   readonly #nombre: string;
@@ -38,7 +39,6 @@ export class Carrera {
     this.#nombre = nombre;
     this.#documento = documento;
     this.#telefono = telefono;
-
     this.#fechaRecogida = fechaHoraRecogida;
     this.#horaRecogida = horaRecogida;
     this.#direccion = direccion;
@@ -46,13 +46,18 @@ export class Carrera {
   }
 
   private validarJornadaDiurnaNocturna(hora: string) {
-    if (+hora.split(':')[0] < HORA_MEDIO_DIA) {
-      return COSTO_BASE_DIURNO;
-    } else if (
-      +hora.split(':')[0] <= HORA_FIN_DIA &&
-      +hora.split(':')[0] >= HORA_MEDIO_DIA
+    if (
+      +hora.split(':')[0] >= HORA_INICIO_DIA &&
+      +hora.split(':')[0] <= HORA_FIN_DIA
     ) {
-      return COSTO_BASE_NOCTURNO;
+      if (
+        +hora.split(':')[0] >= RANGO_DIURNO[0] &&
+        +hora.split(':')[0] < RANGO_DIURNO[1]
+      ) {
+        return COSTO_BASE_DIURNO;
+      } else {
+        return COSTO_BASE_NOCTURNO;
+      }
     } else {
       throw new ErrorHoraInvalida('La hora debe estar en formato de 24 horas');
     }

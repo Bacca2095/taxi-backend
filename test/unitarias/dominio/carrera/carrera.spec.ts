@@ -13,12 +13,22 @@ describe('Modelo usuario', () => {
       'calle 17',
     );
 
-    expect(carrera.nombre).toEqual('Cesar');
-    expect(carrera.documento).toEqual('1091674713');
-    expect(carrera.telefono).toEqual(3182990138);
-    expect(carrera.horaRecogida).toEqual('8:00');
-    expect(carrera.direccion).toEqual('calle 17');
-    expect(carrera.fechaRecogida).toEqual(new Date('2021-08-13T08:00:00.626Z'));
+    const nombre = carrera.nombre === 'Cesar';
+    const documento = carrera.documento === '1091674713';
+    const telefono = carrera.telefono === 3182990138;
+    const horaRecogida = carrera.horaRecogida === '8:00';
+    const direccion = carrera.direccion === 'calle 17';
+    const fechaRecogida =
+      carrera.fechaRecogida.toISOString() === '2021-08-13T08:00:00.626Z';
+
+    expect(
+      nombre &&
+        documento &&
+        telefono &&
+        horaRecogida &&
+        direccion &&
+        fechaRecogida,
+    ).toEqual(true);
   });
 
   it('debería validar el costo de la carrera diurna entre semana', () => {
@@ -39,7 +49,7 @@ describe('Modelo usuario', () => {
       '1091674713',
       3182990138,
       '2021-08-13T15:10:33.626Z',
-      '16:00',
+      '21:00',
       'calle 17',
     );
     expect(carrera.costo).toEqual(7500);
@@ -63,7 +73,7 @@ describe('Modelo usuario', () => {
       '1091674713',
       3182990138,
       '2021-08-14T15:10:33.626Z',
-      '16:00',
+      '23:00',
       'calle 17',
     );
     expect(carrera.costo).toEqual(9750);
@@ -75,10 +85,9 @@ describe('Modelo usuario', () => {
       '1091674713',
       3182990138,
       '2021-08-14T15:10:33.626Z',
-      '16:00',
+      '22:00',
       'calle 17',
     );
-
     carrera.aplicarDescuentoCuartaCarrera();
     expect(carrera.costo).toEqual(7800);
   });
@@ -92,7 +101,6 @@ describe('Modelo usuario', () => {
       '8:00',
       'calle 17',
     );
-
     carrera.aplicarDescuentoCuartaCarrera();
     expect(carrera.costo).toEqual(6240);
   });

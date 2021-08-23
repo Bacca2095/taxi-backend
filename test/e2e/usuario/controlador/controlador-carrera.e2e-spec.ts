@@ -90,6 +90,7 @@ describe('Pruebas al controlador de carreras', () => {
     const response = await request(app.getHttpServer())
       .get('/carreras/1091674713')
       .expect(HttpStatus.OK);
+
     expect(response.body).toEqual(carreras);
   });
   it('debería registrar la carrera', async () => {
@@ -158,7 +159,8 @@ describe('Pruebas al controlador de carreras', () => {
   it('debería eliminar una carrera con media hora de diferencia a la hora actual', async () => {
     const fechaActual = new Date();
     const fechaRecogida = fechaActual;
-    fechaRecogida.setMinutes(fechaRecogida.getMinutes() + 29);
+    fechaRecogida.setHours(fechaRecogida.getTimezoneOffset() / 60);
+    fechaRecogida.setMinutes(fechaRecogida.getMinutes() + 30);
     const carrera: any = {
       nombre: 'Cesar',
       documento: '1091674713',
