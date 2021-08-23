@@ -6,7 +6,8 @@ const PORCENTAJE_DESCUENTO_CUARTA_CARRERA = 0.2;
 const HORA_INICIO_DIA = 0;
 const HORA_FIN_DIA = 23;
 const HORA_A_MINUTOS = 60;
-const RANGO_DIURNO = [6, 21];
+const HORA_INICIAL_DIURNO = 6;
+const HORA_FINAL_DIURNO = 21;
 
 export class Carrera {
   readonly #nombre: string;
@@ -51,8 +52,8 @@ export class Carrera {
       +hora.split(':')[0] <= HORA_FIN_DIA
     ) {
       if (
-        +hora.split(':')[0] >= RANGO_DIURNO[0] &&
-        +hora.split(':')[0] < RANGO_DIURNO[1]
+        +hora.split(':')[0] >= HORA_INICIAL_DIURNO &&
+        +hora.split(':')[0] < HORA_FINAL_DIURNO
       ) {
         return COSTO_BASE_DIURNO;
       } else {
