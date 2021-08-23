@@ -159,7 +159,9 @@ describe('Pruebas al controlador de carreras', () => {
   it('debería eliminar una carrera con media hora de diferencia a la hora actual', async () => {
     const fechaActual = new Date();
     const fechaRecogida = fechaActual;
-    fechaRecogida.setHours(fechaRecogida.getTimezoneOffset() / 60);
+    fechaRecogida.setHours(
+      fechaRecogida.getHours() - fechaRecogida.getTimezoneOffset() / 60,
+    );
     fechaRecogida.setMinutes(fechaRecogida.getMinutes() + 30);
     const carrera: any = {
       nombre: 'Cesar',
@@ -178,7 +180,9 @@ describe('Pruebas al controlador de carreras', () => {
   it('debería fallar al eliminar una carrera con menos de media hora de diferencia a la hora actual', async () => {
     const fechaActual = new Date();
     const fechaRecogida = new Date();
-    fechaRecogida.setHours(fechaRecogida.getTimezoneOffset() / 60);
+    fechaRecogida.setHours(
+      fechaRecogida.getHours() - fechaRecogida.getTimezoneOffset() / 60,
+    );
     fechaRecogida.setMinutes(fechaRecogida.getMinutes() + 29);
 
     const carrera: any = {
