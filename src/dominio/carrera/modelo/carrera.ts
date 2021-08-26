@@ -1,10 +1,7 @@
-import { ErrorHoraInvalida } from './../../errores/error-hora-invalida';
 const COSTO_BASE_DIURNO = 6000;
 const COSTO_BASE_NOCTURNO = 7500;
 const PORCENTAJE_ADICIONAL_FIN_DE_SEMANA = 0.3;
 const PORCENTAJE_DESCUENTO_CUARTA_CARRERA = 0.2;
-const HORA_INICIO_DIA = 0;
-const HORA_FIN_DIA = 23;
 const HORA_A_MINUTOS = 60;
 const HORA_INICIAL_DIURNO = 6;
 const HORA_FINAL_DIURNO = 21;
@@ -47,10 +44,7 @@ export class Carrera {
   }
 
   private validarJornadaDiurnaNocturna(hora: string) {
-    if (
-      +hora.split(':')[0] >= HORA_INICIO_DIA &&
-      +hora.split(':')[0] <= HORA_FIN_DIA
-    ) {
+    
       if (
         +hora.split(':')[0] >= HORA_INICIAL_DIURNO &&
         +hora.split(':')[0] < HORA_FINAL_DIURNO
@@ -59,9 +53,6 @@ export class Carrera {
       } else {
         return COSTO_BASE_NOCTURNO;
       }
-    } else {
-      throw new ErrorHoraInvalida('La hora debe estar en formato de 24 horas');
-    }
   }
 
   private validarSabadoDomingo(fecha: Date) {

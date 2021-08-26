@@ -16,6 +16,8 @@ import { createSandbox, SinonStubbedInstance } from 'sinon';
 import { createStubObj } from '../../../utils/create-object.stub';
 import { servicioEliminarCarreraProveedor } from 'src/infraestructura/carrera/proveedor/servicio/servicio-eliminar-carrera.proveedor';
 import { servicioRegistrarCarreraProveedor } from 'src/infraestructura/carrera/proveedor/servicio/servicio-registrar-carrera.proveedor';
+import { CarreraTestDataBuilder } from 'test/utils/carrera-test-data-builder';
+import { ComandoRegistrarCarreraTestDataBuilder } from 'test/utils/comando-registrar-carrera-test-data-builder';
 
 /**
  * Un sandbox es util cuando el módulo de nest se configura una sola vez durante el ciclo completo de pruebas
@@ -75,17 +77,7 @@ describe('Pruebas al controlador de carreras', () => {
   });
 
   it('debería listar las carreras registradas', async () => {
-    const carreras: any[] = [
-      {
-        nombre: 'Cesar',
-        documento: '1091674713',
-        telefono: 3182990138,
-        fechaRecogida: '2021-08-13T15:10:33.626Z',
-        horaRecogida: '8:00',
-        direccion: 'calle 17',
-        costo: 6000,
-      },
-    ];
+    const carreras: any[] = [new CarreraTestDataBuilder().build()];
     daoCarrera.listar.returns(Promise.resolve(carreras));
     const response = await request(app.getHttpServer())
       .get('/carreras/1091674713')
@@ -94,28 +86,16 @@ describe('Pruebas al controlador de carreras', () => {
     expect(response.body).toEqual(carreras);
   });
   it('debería registrar la carrera', async () => {
-    const carrera: ComandoRegistrarCarrera = {
-      nombre: 'Cesar',
-      documento: '1091674713',
-      telefono: 3182990138,
-      fechaRecogida: '2021-08-13T15:10:33.626Z',
-      horaRecogida: '8:00',
-      direccion: 'calle 17',
-    };
+
+   
+    const carrera: ComandoRegistrarCarrera =  new ComandoRegistrarCarreraTestDataBuilder().build();
     await request(app.getHttpServer())
       .post('/carreras')
       .send(carrera)
       .expect(HttpStatus.CREATED);
   });
   it('debería registrar la carrera con descuento de cuarta carrera', async () => {
-    const carrera: ComandoRegistrarCarrera = {
-      nombre: 'Cesar',
-      documento: '1091674713',
-      telefono: 3182990138,
-      fechaRecogida: '2021-08-13T15:10:33.626Z',
-      horaRecogida: '8:00',
-      direccion: 'calle 17',
-    };
+    const carrera: ComandoRegistrarCarrera =  new ComandoRegistrarCarreraTestDataBuilder().build();
 
     repositorioCarrera.validarDescuentoCuartaCarrera.returns(
       Promise.resolve(true),
@@ -126,34 +106,15 @@ describe('Pruebas al controlador de carreras', () => {
       .send(carrera)
       .expect(HttpStatus.CREATED);
   });
-  it('debería fallar al registrar la carrera con formato de hora incorrecto', async () => {
-    const carrera: ComandoRegistrarCarrera = {
-      nombre: 'Cesar',
-      documento: '1091674713',
-      telefono: 3182990138,
-      fechaRecogida: '2021-08-13T15:10:33.626Z',
-      horaRecogida: '25:00',
-      direccion: 'calle 17',
-    };
-    await request(app.getHttpServer())
-      .post('/carreras')
-      .send(carrera)
-      .expect(HttpStatus.BAD_REQUEST);
-  });
 
   it('debería eliminar una carrera con un dia de diferencia mayor a la actual', async () => {
     const fechaActual = new Date();
     const fechaRecogida = new Date();
     fechaRecogida.setDate(fechaRecogida.getDate() + 1);
-    const carrera: any = {
-      nombre: 'Cesar',
-      documento: '1091674713',
-      telefono: 3182990138,
-      fechaRecogida: fechaRecogida,
-      horaRecogida: fechaActual.getHours() + ':' + fechaActual.getMinutes(),
-      direccion: 'calle 17',
-      costo: 6000,
-    };
+    const carrera = new CarreraTestDataBuilder()
+      .withFecha(fechaRecogida.toISOString())
+      .withHora(fechaActual.getHours() + ':' + fechaActual.getMinutes())
+      .build();
     repositorioCarrera.buscar.returns(Promise.resolve(carrera));
     await request(app.getHttpServer())
       .delete('/carreras/1')
@@ -188,15 +149,10 @@ describe('Pruebas al controlador de carreras', () => {
     );
     fechaRecogida.setMinutes(fechaRecogida.getMinutes() + 29);
 
-    const carrera: any = {
-      nombre: 'Cesar',
-      documento: '1091674713',
-      telefono: 3182990138,
-      fechaRecogida: fechaRecogida,
-      horaRecogida: fechaActual.getHours() + ':' + fechaActual.getMinutes(),
-      direccion: 'calle 17',
-      costo: 6000,
-    };
+    const carrera = new CarreraTestDataBuilder()
+      .withFecha(fechaRecogida.toISOString())
+      .withHora(fechaActual.getHours() + ':' + fechaActual.getMinutes())
+      .build();
     repositorioCarrera.buscar.returns(Promise.resolve(carrera));
 
     await request(app.getHttpServer())

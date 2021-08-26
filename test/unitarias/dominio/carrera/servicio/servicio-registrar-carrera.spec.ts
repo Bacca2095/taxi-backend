@@ -2,14 +2,13 @@ import { createSandbox, SinonStubbedInstance } from 'sinon';
 import { createStubObj } from '../../../../utils/create-object.stub';
 import { RepositorioCarrera } from 'src/dominio/carrera/puerto/repositorio/repositorio-carrera';
 import { ServicioRegistrarCarrera } from 'src/dominio/carrera/servicio/servicio-registrar-carrera';
-import { Carrera } from 'src/dominio/carrera/modelo/carrera';
+import { CarreraTestDataBuilder } from 'test/utils/carrera-test-data-builder';
 
 const sinonSandbox = createSandbox();
-describe('Servicio eliminar carrera', () => {
+describe('Servicio registrar carrera', () => {
   let repositorioCarrera: SinonStubbedInstance<RepositorioCarrera>;
   let servicioRegistrarCarrera: ServicioRegistrarCarrera;
-  let spyServicioRegistrarCarrera: any;
-  const _Carrera = Carrera;
+  
 
   beforeAll(async () => {
     repositorioCarrera = createStubObj<RepositorioCarrera>(
@@ -18,10 +17,6 @@ describe('Servicio eliminar carrera', () => {
     );
 
     servicioRegistrarCarrera = new ServicioRegistrarCarrera(repositorioCarrera);
-    spyServicioRegistrarCarrera = jest.spyOn(
-      servicioRegistrarCarrera,
-      'ejecutar',
-    );
   });
 
   afterEach(() => {
@@ -29,57 +24,21 @@ describe('Servicio eliminar carrera', () => {
   });
 
   it('debería registrar la carrera', async () => {
-    const carrera: Carrera = new _Carrera(
-      'Cesar',
-      '1091674713',
-      3182990138,
-      '2021-08-13T15:10:33.626Z',
-      '8:00',
-      'calle 17',
-    );
+    const carrera = new CarreraTestDataBuilder().build();
 
     repositorioCarrera.validarDescuentoCuartaCarrera.returns(
       Promise.resolve(false),
     );
 
-    await servicioRegistrarCarrera.ejecutar(carrera);
-
-    expect(spyServicioRegistrarCarrera).toBeCalled();
+    await expect(servicioRegistrarCarrera.ejecutar(carrera)).resolves;
   });
   it('debería registrar la carrera con descuento de cuarta carrera', async () => {
-    const carrera: Carrera = new _Carrera(
-      'Cesar',
-      '1091674713',
-      3182990138,
-      '2021-08-13T15:10:33.626Z',
-      '8:00',
-      'calle 17',
-    );
+    const carrera = new CarreraTestDataBuilder().build();
 
     repositorioCarrera.validarDescuentoCuartaCarrera.returns(
       Promise.resolve(true),
     );
 
-    await servicioRegistrarCarrera.ejecutar(carrera);
-
-    expect(spyServicioRegistrarCarrera).toBeCalled();
-  });
-  it('debería fallar al registrar la carrera con formato de hora incorrecto', async () => {
-    const carrera: Carrera = new _Carrera(
-      'Cesar',
-      '1091674713',
-      3182990138,
-      '2021-08-13T15:10:33.626Z',
-      '8:00',
-      'calle 17',
-    );
-
-    repositorioCarrera.validarDescuentoCuartaCarrera.returns(
-      Promise.resolve(false),
-    );
-
-    await servicioRegistrarCarrera.ejecutar(carrera);
-
-    expect(spyServicioRegistrarCarrera).toBeCalled();
+    await expect(servicioRegistrarCarrera.ejecutar(carrera)).resolves;
   });
 });
