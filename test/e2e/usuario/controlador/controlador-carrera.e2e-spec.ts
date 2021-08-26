@@ -116,9 +116,11 @@ describe('Pruebas al controlador de carreras', () => {
       horaRecogida: '8:00',
       direccion: 'calle 17',
     };
+
     repositorioCarrera.validarDescuentoCuartaCarrera.returns(
       Promise.resolve(true),
     );
+
     await request(app.getHttpServer())
       .post('/carreras')
       .send(carrera)
@@ -138,6 +140,7 @@ describe('Pruebas al controlador de carreras', () => {
       .send(carrera)
       .expect(HttpStatus.BAD_REQUEST);
   });
+
   it('debería eliminar una carrera con un dia de diferencia mayor a la actual', async () => {
     const fechaActual = new Date();
     const fechaRecogida = new Date();
