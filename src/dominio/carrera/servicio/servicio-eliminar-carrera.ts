@@ -18,8 +18,10 @@ export class ServicioEliminarCarrera {
     let diferenciaTiempo =
       (carrera.fechaRecogida.getTime() - fechaActual.getTime()) / secondToMilli;
     diferenciaTiempo /= hourToMinutes;
+    
 
-    diferenciaTiempo = Math.round(diferenciaTiempo);
+    diferenciaTiempo = Math.ceil(diferenciaTiempo);
+    
 
     if (diferenciaTiempo > minutesMinToDelete) {
       await this._repositorioCarrera.eliminar(id);

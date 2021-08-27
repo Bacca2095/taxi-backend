@@ -119,23 +119,18 @@ describe('Pruebas al controlador de carreras', () => {
     await request(app.getHttpServer())
       .delete('/carreras/1')
       .expect(HttpStatus.OK);
-  });
+  }); 
   it('debería eliminar una carrera con media hora de diferencia a la hora actual', async () => {
     const fechaActual = new Date();
     const fechaRecogida = fechaActual;
-    fechaRecogida.setHours(
-      fechaRecogida.getHours() - fechaRecogida.getTimezoneOffset() / 60,
-    );
+    
     fechaRecogida.setMinutes(fechaRecogida.getMinutes() + 30);
-    const carrera: any = {
-      nombre: 'Cesar',
-      documento: '1091674713',
-      telefono: 3182990138,
-      fechaRecogida: fechaRecogida,
-      horaRecogida: fechaActual.getHours() + ':' + fechaActual.getMinutes(),
-      direccion: 'calle 17',
-      costo: 6000,
-    };
+
+    const carrera = new CarreraTestDataBuilder()
+      .withFecha(fechaRecogida.toISOString())
+      .withHora(fechaActual.getHours() + ':' + fechaActual.getMinutes())
+      .build();
+   
     repositorioCarrera.buscar.returns(Promise.resolve(carrera));
     await request(app.getHttpServer())
       .delete('/carreras/1')
@@ -158,5 +153,5 @@ describe('Pruebas al controlador de carreras', () => {
     await request(app.getHttpServer())
       .delete('/carreras/1')
       .expect(HttpStatus.BAD_REQUEST);
-  });
+  }); 
 });
