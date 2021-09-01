@@ -7,7 +7,7 @@ export class MigracionCarrera1628634904229 implements MigrationInterface {
         id int NOT NULL AUTO_INCREMENT,
         nombre varchar(255) NOT NULL,
         documento varchar(255) NOT NULL,
-        telefono int NOT NULL,
+        telefono varchar(255) NOT NULL,
         fechaRecogida datetime NOT NULL,
         horaRecogida varchar(255) NOT NULL,
         direccion varchar(255) NOT NULL,
