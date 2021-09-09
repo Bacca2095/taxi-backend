@@ -86,16 +86,16 @@ describe('Pruebas al controlador de carreras', () => {
     expect(response.body).toEqual(carreras);
   });
   it('debería registrar la carrera', async () => {
-
-   
-    const carrera: ComandoRegistrarCarrera =  new ComandoRegistrarCarreraTestDataBuilder().build();
+    const carrera: ComandoRegistrarCarrera =
+      new ComandoRegistrarCarreraTestDataBuilder().build();
     await request(app.getHttpServer())
       .post('/carreras')
       .send(carrera)
       .expect(HttpStatus.CREATED);
   });
   it('debería registrar la carrera con descuento de cuarta carrera', async () => {
-    const carrera: ComandoRegistrarCarrera =  new ComandoRegistrarCarreraTestDataBuilder().build();
+    const carrera: ComandoRegistrarCarrera =
+      new ComandoRegistrarCarreraTestDataBuilder().build();
 
     repositorioCarrera.validarDescuentoCuartaCarrera.returns(
       Promise.resolve(true),
@@ -119,18 +119,18 @@ describe('Pruebas al controlador de carreras', () => {
     await request(app.getHttpServer())
       .delete('/carreras/1')
       .expect(HttpStatus.OK);
-  }); 
+  });
   it('debería eliminar una carrera con media hora de diferencia a la hora actual', async () => {
     const fechaActual = new Date();
     const fechaRecogida = fechaActual;
-    
+
     fechaRecogida.setMinutes(fechaRecogida.getMinutes() + 30);
 
     const carrera = new CarreraTestDataBuilder()
       .withFecha(fechaRecogida.toISOString())
       .withHora(fechaActual.getHours() + ':' + fechaActual.getMinutes())
       .build();
-   
+
     repositorioCarrera.buscar.returns(Promise.resolve(carrera));
     await request(app.getHttpServer())
       .delete('/carreras/1')
@@ -153,5 +153,5 @@ describe('Pruebas al controlador de carreras', () => {
     await request(app.getHttpServer())
       .delete('/carreras/1')
       .expect(HttpStatus.BAD_REQUEST);
-  }); 
+  });
 });

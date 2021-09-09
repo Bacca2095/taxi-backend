@@ -8,7 +8,6 @@ const sinonSandbox = createSandbox();
 describe('Servicio registrar carrera', () => {
   let repositorioCarrera: SinonStubbedInstance<RepositorioCarrera>;
   let servicioRegistrarCarrera: ServicioRegistrarCarrera;
-  
 
   beforeAll(async () => {
     repositorioCarrera = createStubObj<RepositorioCarrera>(

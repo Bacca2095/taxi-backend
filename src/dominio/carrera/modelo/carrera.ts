@@ -44,15 +44,14 @@ export class Carrera {
   }
 
   private validarJornadaDiurnaNocturna(hora: string) {
-    
-      if (
-        +hora.split(':')[0] >= HORA_INICIAL_DIURNO &&
-        +hora.split(':')[0] < HORA_FINAL_DIURNO
-      ) {
-        return COSTO_BASE_DIURNO;
-      } else {
-        return COSTO_BASE_NOCTURNO;
-      }
+    if (
+      +hora.split(':')[0] >= HORA_INICIAL_DIURNO &&
+      +hora.split(':')[0] < HORA_FINAL_DIURNO
+    ) {
+      return COSTO_BASE_DIURNO;
+    } else {
+      return COSTO_BASE_NOCTURNO;
+    }
   }
 
   private validarSabadoDomingo(fecha: Date) {

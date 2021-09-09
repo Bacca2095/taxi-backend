@@ -28,6 +28,11 @@ pipeline{
                     sh 'npm i'                    
                 }
             }
+            stage('lint '){
+                steps {
+                    sh 'npm run lint'                    
+                }
+            }
             stage('test '){
                 steps {
                     sh 'npm run test:cov'                    

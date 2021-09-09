@@ -1,7 +1,6 @@
 import { Carrera } from 'src/dominio/carrera/modelo/carrera';
 import { CarreraTestDataBuilder } from 'test/utils/carrera-test-data-builder';
 
-
 describe('Modelo usuario', () => {
   it('debería crear la carrera', () => {
     const carrera = new CarreraTestDataBuilder().build();
@@ -35,23 +34,33 @@ describe('Modelo usuario', () => {
   });
 
   it('debería validar el costo de la carrera diurna el fin de semana', () => {
-    const carrera = new CarreraTestDataBuilder().withFecha('2021-08-14T15:10:33.626Z').build();
-    
+    const carrera = new CarreraTestDataBuilder()
+      .withFecha('2021-08-14T15:10:33.626Z')
+      .build();
+
     expect(carrera.costo).toEqual(7800);
   });
 
   it('debería validar el costo de la carrera nocturna el fin de semana', () => {
-    const carrera = new CarreraTestDataBuilder().withFecha('2021-08-14T15:10:33.626Z').withHora('23:00').build();
+    const carrera = new CarreraTestDataBuilder()
+      .withFecha('2021-08-14T15:10:33.626Z')
+      .withHora('23:00')
+      .build();
     expect(carrera.costo).toEqual(9750);
   });
   it('debería validar el costo de la carrera nocturna el fin de semana y descuento de cuarta carrera', () => {
-    const carrera = new CarreraTestDataBuilder().withFecha('2021-08-14T15:10:33.626Z').withHora('22:00').build();
+    const carrera = new CarreraTestDataBuilder()
+      .withFecha('2021-08-14T15:10:33.626Z')
+      .withHora('22:00')
+      .build();
     carrera.aplicarDescuentoCuartaCarrera();
     expect(carrera.costo).toEqual(7800);
   });
 
   it('debería validar el costo de la carrera diurna el fin de semana y descuento de cuarta carrera', () => {
-    const carrera = new CarreraTestDataBuilder().withFecha('2021-08-14T15:10:33.626Z').build();
+    const carrera = new CarreraTestDataBuilder()
+      .withFecha('2021-08-14T15:10:33.626Z')
+      .build();
     carrera.aplicarDescuentoCuartaCarrera();
     expect(carrera.costo).toEqual(6240);
   });
